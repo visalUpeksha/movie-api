@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using movie_api_repo.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,40 +11,25 @@ using System.Threading.Tasks;
 
 namespace movie_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/get-movies")]
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        // GET: api/<MoviesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        public IConfiguration Configuration { get; set; }
+        public MoviesController(IConfiguration Config)
         {
-            return new string[] { "value1", "value2" };
+            Configuration = Config;
         }
 
         // GET api/<MoviesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{imdbIds}")]
+        public string Get(string imdbIds)
         {
-            return "value";
+            MovieService service = new(Configuration);
+
+            return service.GetMovies(imdbIds);
         }
 
-        // POST api/<MoviesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<MoviesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<MoviesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
