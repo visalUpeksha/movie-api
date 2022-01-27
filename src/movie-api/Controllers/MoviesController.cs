@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using movie_api_repo.Services;
@@ -14,6 +15,7 @@ namespace movie_api.Controllers
     [Authorize]
     [Route("api/get-movies")]
     [ApiController]
+    [EnableCors("AllowMyOrigin")]
     public class MoviesController : ControllerBase
     {
         public IConfiguration Configuration { get; set; }
